@@ -9,7 +9,7 @@ import androidx.room.Update
 @Dao
 interface GoodDao {
     @Insert
-    fun insert(vararg good: Good)
+    fun insert(good: Good)
 
     @Delete
     fun delete(good: Good)
@@ -18,7 +18,7 @@ interface GoodDao {
     fun getGoodsForList(listId: Int): List<Good>
 
     @Update
-    fun updateGood(vararg good: Good)
+    fun updateGood(good: Good)
 
     @Query("UPDATE good SET isBought = 1 WHERE id = :goodId")
     fun markAsBought(goodId: Int)
@@ -27,7 +27,7 @@ interface GoodDao {
 @Dao
 interface ShoppingListDao {
     @Insert
-    fun insert(vararg shoppingList: ShoppingList)
+    fun insert(shoppingList: ShoppingList)
 
     @Delete
     fun delete(shoppingList: ShoppingList)
@@ -36,5 +36,5 @@ interface ShoppingListDao {
     fun getAll(): List<ShoppingList>
 
     @Update
-    fun updateShoppingList(vararg shoppingList: ShoppingList)
+    fun updateShoppingList(shoppingList: ShoppingList)
 }
