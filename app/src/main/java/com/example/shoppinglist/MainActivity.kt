@@ -24,48 +24,32 @@ import androidx.room.Room
 import com.example.shoppinglist.database.ShoppingList
 import com.example.shoppinglist.ui.theme.ShoppingListTheme
 import com.example.shoppinglist.database.ShoppingDatabase
+import com.example.shoppinglist.ui.theme.LightPurple
+import com.example.shoppinglist.ui.theme.MediumPurple
+import com.example.shoppinglist.ui.theme.DarkPurple
+import com.example.shoppinglist.screens.ListsScreen
 
 class MainActivity : ComponentActivity() {
     private lateinit var db: ShoppingDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val db = Room.databaseBuilder(
+        db = Room.databaseBuilder(
             applicationContext,
             ShoppingDatabase::class.java,
             "shopping_database"
         ).build()
 
         setContent {
-            PlusButtonPreview()
+            ListsScreen(db = db)
         }
     }
 }
-@Composable
-fun PlusButton() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Button(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            onClick = {},
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.Black,
-                containerColor = Color.LightGray
-            ),
-        ) {
-            Text("Add new list")
-        }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun PlusButtonPreview() {
-    ShoppingListTheme {
-        PlusButton()
-    }
-}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PlusButtonPreview() {
+//    ShoppingListTheme {
+//        PlusButton()
+//    }
+//}

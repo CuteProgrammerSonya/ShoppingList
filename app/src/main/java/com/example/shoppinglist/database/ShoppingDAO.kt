@@ -9,32 +9,32 @@ import androidx.room.Update
 @Dao
 interface GoodDao {
     @Insert
-    fun insert(good: Good)
+    suspend fun insert(good: Good)
 
     @Delete
-    fun delete(good: Good)
+    suspend fun delete(good: Good)
 
     @Query("SELECT * FROM good WHERE listId = :listId")
-    fun getGoodsForList(listId: Int): List<Good>
+    suspend fun getGoodsForList(listId: Int): List<Good>
 
     @Update
-    fun updateGood(good: Good)
+    suspend fun updateGood(good: Good)
 
     @Query("UPDATE good SET isBought = 1 WHERE id = :goodId")
-    fun markAsBought(goodId: Int)
+    suspend fun markAsBought(goodId: Int)
 }
 
 @Dao
 interface ShoppingListDao {
     @Insert
-    fun insert(shoppingList: ShoppingList)
+    suspend fun insert(shoppingList: ShoppingList)
 
     @Delete
-    fun delete(shoppingList: ShoppingList)
+    suspend fun delete(shoppingList: ShoppingList)
 
     @Query("SELECT * FROM shopping_list")
-    fun getAll(): List<ShoppingList>
+    suspend fun getAll(): List<ShoppingList>
 
     @Update
-    fun updateShoppingList(shoppingList: ShoppingList)
+    suspend fun updateShoppingList(shoppingList: ShoppingList)
 }
