@@ -31,7 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 
 @Composable
-fun Good(good: Good, onBoughtChange: (Boolean) -> Unit = {}, onDeleteClick: () -> Unit = {}){
+fun Good(good: Good,
+         onBoughtChange: (Boolean) -> Unit = {},
+         onDeleteClick: () -> Unit = {},
+         onEditClick: () -> Unit = {}){
     var boughtState by remember { mutableStateOf(good.isBought) }
 
     Row(
@@ -59,9 +62,16 @@ fun Good(good: Good, onBoughtChange: (Boolean) -> Unit = {}, onDeleteClick: () -
             modifier = Modifier.weight(1f),
             textDecoration = if (boughtState) TextDecoration.LineThrough else null
         )
-
-        DeleteButton(
-            onClick = onDeleteClick
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         )
+        {
+            EditButton(
+                onClick = onEditClick
+            )
+            DeleteButton(
+                onClick = onDeleteClick
+            )
+        }
     }
 }

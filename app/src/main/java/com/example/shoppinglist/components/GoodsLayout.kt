@@ -15,6 +15,7 @@ fun GoodsLayout(
     goods: List<Good>,
     onBoughtChange: (Good, Boolean) -> Unit,
     onDeleteClick: (Good) -> Unit,
+    onEditClick: (Good) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -27,7 +28,8 @@ fun GoodsLayout(
             Good(
                 good = good,
                 onBoughtChange = { isBought -> onBoughtChange(good, isBought) },
-                onDeleteClick = { onDeleteClick(good) }
+                onDeleteClick = { onDeleteClick(good) },
+                onEditClick = { onEditClick(good) }
             )
         }
     }

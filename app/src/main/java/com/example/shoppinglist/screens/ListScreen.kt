@@ -20,6 +20,8 @@ fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit
     val scope = rememberCoroutineScope()
     var lists by remember { mutableStateOf(emptyList<com.example.shoppinglist.database.ShoppingList>()) }
     var showDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember {mutableStateOf(false)}
+    var editingList by remember { mutableStateOf<ShoppingList?>(null) }
 
     LaunchedEffect(Unit) {
         lists = db.shoppingListDao().getAll()
@@ -39,6 +41,9 @@ fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit
                     lists = db.shoppingListDao().getAll()
                 }
             },
+            onEditClick = { list ->
+                editingList = list
+                showEditDialog = true },
             modifier = Modifier.padding(top = 84.dp)
         )
 
@@ -54,6 +59,7 @@ fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit
         Dialog(
             title = "New Shopping List",
             textFieldLabel = "List name",
+            placeholderText = "List",
             onDismiss = { showDialog = false },
             onConfirm = { listName ->
                 scope.launch {
@@ -61,6 +67,24 @@ fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit
                     db.shoppingListDao().insert(newList)
                     lists = db.shoppingListDao().getAll()
                     showDialog = false
+                }
+            }
+        )
+    }
+
+    if (showEditDialog && editingList != null) {
+        Dialog(
+            title = "Edit Shopping List",
+            textFieldLabel = "List name",
+            placeholderText = editingList!!.listName,
+            onDismiss = { showEditDialog = false },
+            onConfirm = { newName ->
+                scope.launch {
+                    val updatedList = editingList!!.copy(listName = newName)
+                    db.shoppingListDao().updateShoppingList(updatedList)
+                    lists = db.shoppingListDao().getAll()
+                    showEditDialog = false
+                    editingList = null
                 }
             }
         )

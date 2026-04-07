@@ -6,6 +6,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -19,11 +20,16 @@ import com.example.shoppinglist.ui.theme.MediumPurple
 fun Dialog(
     title: String,
     textFieldLabel: String,
+    placeholderText: String,
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var inputText by remember { mutableStateOf("") }
+    var inputText by remember { mutableStateOf(placeholderText) }
+
+    LaunchedEffect(placeholderText) {
+        inputText = placeholderText
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -38,7 +44,10 @@ fun Dialog(
                     focusedBorderColor = DarkPurple,
                     unfocusedBorderColor = MediumPurple,
                     focusedLabelColor = DarkPurple,
-                    unfocusedLabelColor = MediumPurple
+                    unfocusedLabelColor = MediumPurple,
+                    focusedTextColor = DarkPurple,
+                    unfocusedTextColor = DarkPurple,
+                    cursorColor = DarkPurple
                 )
             )
         },

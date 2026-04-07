@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.shoppinglist.database.ShoppingDatabase
 import com.example.shoppinglist.database.ShoppingList
 import com.example.shoppinglist.components.*
+import com.example.shoppinglist.database.Good
 import com.example.shoppinglist.ui.theme.DarkPurple
 import com.example.shoppinglist.ui.theme.MediumPurple
 import kotlinx.coroutines.launch
@@ -35,6 +36,8 @@ fun GoodScreen(
     val scope = rememberCoroutineScope()
     var goods by remember { mutableStateOf(emptyList<com.example.shoppinglist.database.Good>()) }
     var showDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false)}
+    var editingGood by remember { mutableStateOf<Good?>(null) }
 
     LaunchedEffect(listId) {
         goods = db.goodDao().getGoodsForList(listId)
@@ -80,6 +83,9 @@ fun GoodScreen(
                     goods = db.goodDao().getGoodsForList(listId)
                 }
             },
+            onEditClick = {good ->
+                editingGood = good
+                showEditDialog = true},
             modifier = Modifier.weight(1f)
         )
     }
@@ -87,6 +93,7 @@ fun GoodScreen(
         Dialog(
             title = "New Good",
             textFieldLabel = "Good name",
+            placeholderText = "Good",
             onDismiss = { showDialog = false },
             onConfirm = { goodName ->
                 scope.launch {
@@ -98,6 +105,24 @@ fun GoodScreen(
                     db.goodDao().insert(newGood)
                     goods = db.goodDao().getGoodsForList(listId)
                     showDialog = false
+                }
+            }
+        )
+    }
+
+    if (showEditDialog && editingGood != null) {
+        Dialog(
+            title = "Edit Good",
+            textFieldLabel = "Good name",
+            placeholderText = editingGood!!.goodName,
+            onDismiss = { showEditDialog = false },
+            onConfirm = { newName ->
+                scope.launch {
+                    val updatedGood = editingGood!!.copy(goodName = newName)
+                    db.goodDao().updateGood(updatedGood)
+                    goods = db.goodDao().getGoodsForList(listId)
+                    showEditDialog = false
+                    editingGood = null
                 }
             }
         )

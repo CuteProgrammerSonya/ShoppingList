@@ -23,7 +23,10 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun ListBox(list: ShoppingList, onClick: () -> Unit = {}, onDeleteClick: () -> Unit = {}){
+fun ListBox(list: ShoppingList,
+            onClick: () -> Unit = {},
+            onDeleteClick: () -> Unit = {},
+            onEditClick: () -> Unit = {}){
     val dateFormat = SimpleDateFormat("dd.mm.yyyy hh:mm", Locale.getDefault())
     val formattedDate = dateFormat.format(Date(list.createdAt))
 
@@ -58,10 +61,17 @@ fun ListBox(list: ShoppingList, onClick: () -> Unit = {}, onDeleteClick: () -> U
                     color = DarkPurple
                 )
             }
-
-            DeleteButton(
-                onClick = onDeleteClick
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             )
+            {
+                EditButton(
+                    onClick = onEditClick
+                )
+                DeleteButton(
+                    onClick = onDeleteClick
+                )
+            }
         }
     }
 }

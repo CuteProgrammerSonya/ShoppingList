@@ -15,6 +15,7 @@ fun ListsLayout(
     shoppingLists: List<ShoppingList>,
     onListClick: (ShoppingList) -> Unit,
     onDeleteClick: (ShoppingList) -> Unit,
+    onEditClick: (ShoppingList) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -26,7 +27,8 @@ fun ListsLayout(
             ListBox(
                 list = list,
                 onClick = { onListClick(list) },
-                onDeleteClick = { onDeleteClick(list) }
+                onDeleteClick = { onDeleteClick(list) },
+                onEditClick = { onEditClick(list) }
             )
         }
     }
