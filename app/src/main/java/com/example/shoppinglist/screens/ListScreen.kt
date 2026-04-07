@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     var lists by remember { mutableStateOf(emptyList<com.example.shoppinglist.database.ShoppingList>()) }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         lists = db.shoppingListDao().getAll()
@@ -45,12 +46,21 @@ fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit
             modifier = Modifier.padding(start = 16.dp, top = 40.dp),
             text = "Add a new list",
             onClick = {
+                showDialog = true
+            }
+        )
+    }
+    if (showDialog) {
+        Dialog(
+            title = "New Shopping List",
+            textFieldLabel = "List name",
+            onDismiss = { showDialog = false },
+            onConfirm = { listName ->
                 scope.launch {
-                    val newList = com.example.shoppinglist.database.ShoppingList(
-                        listName = "List ${System.currentTimeMillis()}"
-                    )
+                    val newList = com.example.shoppinglist.database.ShoppingList(listName = listName)
                     db.shoppingListDao().insert(newList)
                     lists = db.shoppingListDao().getAll()
+                    showDialog = false
                 }
             }
         )

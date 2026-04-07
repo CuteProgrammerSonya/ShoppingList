@@ -34,6 +34,7 @@ fun GoodScreen(
 ) {
     val scope = rememberCoroutineScope()
     var goods by remember { mutableStateOf(emptyList<com.example.shoppinglist.database.Good>()) }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(listId) {
         goods = db.goodDao().getGoodsForList(listId)
@@ -63,17 +64,7 @@ fun GoodScreen(
         PlusButton(
             modifier = Modifier.padding(start = 16.dp),
             text = "Add a new good",
-            onClick = {
-                scope.launch {
-                    val newGood = com.example.shoppinglist.database.Good(
-                        goodName = "New Good",
-                        listId = listId,
-                        isBought = false
-                    )
-                    db.goodDao().insert(newGood)
-                    goods = db.goodDao().getGoodsForList(listId)
-                }
-            }
+            onClick = { showDialog = true }
         )
         GoodsLayout(
             goods = goods,
@@ -90,6 +81,25 @@ fun GoodScreen(
                 }
             },
             modifier = Modifier.weight(1f)
+        )
+    }
+    if (showDialog) {
+        Dialog(
+            title = "New Good",
+            textFieldLabel = "Good name",
+            onDismiss = { showDialog = false },
+            onConfirm = { goodName ->
+                scope.launch {
+                    val newGood = com.example.shoppinglist.database.Good(
+                        goodName = goodName,
+                        listId = listId,
+                        isBought = false
+                    )
+                    db.goodDao().insert(newGood)
+                    goods = db.goodDao().getGoodsForList(listId)
+                    showDialog = false
+                }
+            }
         )
     }
 }
