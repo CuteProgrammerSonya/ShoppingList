@@ -22,7 +22,6 @@ data class Good(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val goodName: String,
-    val goodCount: Int,
     val isBought: Boolean = false,
     val listId: Int
 )

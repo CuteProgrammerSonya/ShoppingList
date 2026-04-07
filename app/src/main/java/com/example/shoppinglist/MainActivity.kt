@@ -15,6 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +30,10 @@ import com.example.shoppinglist.ui.theme.LightPurple
 import com.example.shoppinglist.ui.theme.MediumPurple
 import com.example.shoppinglist.ui.theme.DarkPurple
 import com.example.shoppinglist.screens.ListsScreen
+import com.example.shoppinglist.screens.GoodScreen
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+
 
 class MainActivity : ComponentActivity() {
     private lateinit var db: ShoppingDatabase
@@ -39,9 +45,26 @@ class MainActivity : ComponentActivity() {
             ShoppingDatabase::class.java,
             "shopping_database"
         ).build()
-
         setContent {
-            ListsScreen(db = db)
+            var currentListId by remember { mutableStateOf<Int?>(null) }
+            var currentListName by remember { mutableStateOf("") }
+
+            if (currentListId == null) {
+                ListsScreen(
+                    db = db,
+                    onListClickCallback = { listId, listName ->
+                        currentListId = listId
+                        currentListName = listName
+                    }
+                )
+            } else {
+                GoodScreen(
+                    db = db,
+                    listId = currentListId!!,
+                    listName = currentListName,
+                    onBackClick = {currentListId = null}
+                )
+            }
         }
     }
 }

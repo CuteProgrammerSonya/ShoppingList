@@ -11,7 +11,7 @@ import com.example.shoppinglist.ui.theme.DarkPurple
 import com.example.shoppinglist.ui.theme.MediumPurple
 
 @Composable
-fun PlusButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun PlusButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
     Button(
         modifier = modifier,
         onClick = onClick,
@@ -21,6 +21,6 @@ fun PlusButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
             containerColor = MediumPurple
         ),
     ) {
-        Text("Add new list")
+        Text(text)
     }
 }

@@ -20,8 +20,8 @@ interface GoodDao {
     @Update
     suspend fun updateGood(good: Good)
 
-    @Query("UPDATE good SET isBought = 1 WHERE id = :goodId")
-    suspend fun markAsBought(goodId: Int)
+    @Query("UPDATE good SET isBought = :isBought WHERE id = :goodId")
+    suspend fun markAsBought(goodId: Int, isBought: Boolean)
 }
 
 @Dao

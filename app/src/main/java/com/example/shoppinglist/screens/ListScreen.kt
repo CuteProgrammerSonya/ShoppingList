@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun ListsScreen(db: ShoppingDatabase, modifier: Modifier = Modifier) {
+fun ListsScreen(db: ShoppingDatabase, onListClickCallback: (Int, String) -> Unit, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     var lists by remember { mutableStateOf(emptyList<com.example.shoppinglist.database.ShoppingList>()) }
 
@@ -31,8 +31,7 @@ fun ListsScreen(db: ShoppingDatabase, modifier: Modifier = Modifier) {
     ) {
         ListsLayout(
             shoppingLists = lists,
-            onListClick = {list ->
-                println("Открыт список: ${list.listName}")},
+            onListClick = {list -> onListClickCallback(list.id, list.listName)},
             onDeleteClick = { list ->
                 scope.launch {
                     db.shoppingListDao().delete(list)
@@ -44,6 +43,7 @@ fun ListsScreen(db: ShoppingDatabase, modifier: Modifier = Modifier) {
 
         PlusButton(
             modifier = Modifier.padding(start = 16.dp, top = 40.dp),
+            text = "Add a new list",
             onClick = {
                 scope.launch {
                     val newList = com.example.shoppinglist.database.ShoppingList(
