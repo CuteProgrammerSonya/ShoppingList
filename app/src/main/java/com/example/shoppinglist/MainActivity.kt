@@ -33,6 +33,7 @@ import com.example.shoppinglist.screens.ListsScreen
 import com.example.shoppinglist.screens.GoodScreen
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 
 
 class MainActivity : ComponentActivity() {
@@ -46,8 +47,8 @@ class MainActivity : ComponentActivity() {
             "shopping_database"
         ).build()
         setContent {
-            var currentListId by remember { mutableStateOf<Int?>(null) }
-            var currentListName by remember { mutableStateOf("") }
+            var currentListId by rememberSaveable() { mutableStateOf<Int?>(null) }
+            var currentListName by rememberSaveable { mutableStateOf("") }
 
             if (currentListId == null) {
                 ListsScreen(
